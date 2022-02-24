@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_flutter_moor/db/todo_table.dart';
+//import 'package:todo_flutter_moor/db/todo_table.dart';
 import 'package:todo_flutter_moor/view/moor_page.dart';
 
 void main() {
@@ -37,12 +37,12 @@ class Home extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => Provider(
-                      create: (_) => AppDatabase(),
-                      child: const MoorPage(),
-                    ),
-                  ),
+                  MaterialPageRoute(builder: (context) => const MoorPage()
+                      //  Provider(
+                      //   create: (_) => AppDatabase(),
+                      //   child: const MoorPage(),
+                      // ),
+                      ),
                 );
               },
               child: const Padding(
