@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_flutter_moor/db/todo_table.dart';
+import 'package:todo_flutter_moor/db/moor/todo_table.dart';
 
 class MoorPage extends StatelessWidget {
   const MoorPage({Key? key}) : super(key: key);
@@ -31,14 +31,43 @@ class MoorPage extends StatelessWidget {
                   itemBuilder: (_, index) {
                     final Task task = tasks[index];
 
-                    return CheckboxListTile(
+                    return ListTile(
                       title: Text(task.title),
                       subtitle: Text(task.dueDate != null
                           ? task.dueDate.toString()
                           : 'N/A'),
-                      value: task.completed,
-                      onChanged: (newBool) {
-                        database.updateTask(task.copyWith(completed: newBool));
+                      trailing: Checkbox(
+                        value: task.completed,
+                        onChanged: (newBool) {
+                          database
+                              .updateTask(task.copyWith(completed: newBool));
+                        },
+                      ),
+                      onLongPress: () {
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: const Text('Delete'),
+                            content: const Text('Are you sure?'),
+                            actions: [
+                              TextButton(
+                                child: const Text('Cancel'),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                              ),
+                              TextButton(
+                                child: const Text('Delete'),
+                                onPressed: () {
+                                  Provider.of<AppDatabase>(context,
+                                          listen: false)
+                                      .deleteTask(task);
+                                  Navigator.pop(context);
+                                },
+                              ),
+                            ],
+                          ),
+                        );
                       },
                     );
                   },
@@ -49,7 +78,7 @@ class MoorPage extends StatelessWidget {
           Container(
             decoration: BoxDecoration(
                 color: Colors.blueGrey.withOpacity(0.5),
-                borderRadius: BorderRadius.all(Radius.circular(10.0))),
+                borderRadius: const BorderRadius.all(Radius.circular(10.0))),
             margin:
                 const EdgeInsets.symmetric(horizontal: 12.0, vertical: 15.0),
             padding: const EdgeInsets.all(15.0),
@@ -86,6 +115,7 @@ class MoorPage extends StatelessWidget {
                   onPressed: () {
                     if (title != null && title!.isNotEmpty) {
                       titleControl.clear();
+
                       Provider.of<AppDatabase>(context, listen: false)
                           .insertTask(
                         Task(
@@ -93,8 +123,14 @@ class MoorPage extends StatelessWidget {
                           dueDate: time,
                         ),
                       );
+                      time = null;
+                      title = null;
                     } else {
-                      print('cant save empty task');
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text("Can't save empty task"),
+                        ),
+                      );
                     }
                   },
                 ),

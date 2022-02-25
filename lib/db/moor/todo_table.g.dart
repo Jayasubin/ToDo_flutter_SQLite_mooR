@@ -1,4 +1,4 @@
-// GENERATED CODE - DO NOT MODIFY BY HAND
+ // GENERATED CODE - DO NOT MODIFY BY HAND
 
 part of 'todo_table.dart';
 
@@ -8,15 +8,16 @@ part of 'todo_table.dart';
 
 // ignore_for_file: unnecessary_brace_in_string_interps, unnecessary_this
 class Task extends DataClass implements Insertable<Task> {
-  final int id;
+  final int? id;
   final String title;
   final DateTime? dueDate;
-  final bool completed;
+  final bool? completed;
   Task(
-      {required this.id,
+      {this.id,
       required this.title,
       this.dueDate,
-      required this.completed});
+      this.completed});
+
   factory Task.fromData(Map<String, dynamic> data, GeneratedDatabase db,
       {String? prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -31,26 +32,32 @@ class Task extends DataClass implements Insertable<Task> {
           .mapFromDatabaseResponse(data['${effectivePrefix}completed'])!,
     );
   }
+
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    map['id'] = Variable<int>(id);
+    if (!nullToAbsent || id != null) {
+      map['id'] = Variable<int?>(id);
+    }
     map['title'] = Variable<String>(title);
     if (!nullToAbsent || dueDate != null) {
       map['due_date'] = Variable<DateTime?>(dueDate);
     }
-    map['completed'] = Variable<bool>(completed);
+    if (!nullToAbsent || completed != null) {
+      map['completed'] = Variable<bool?>(completed);
+    }
+
     return map;
   }
 
   TasksCompanion toCompanion(bool nullToAbsent) {
     return TasksCompanion(
-      id: Value(id),
+      id: id ==null &&nullToAbsent?const Value.absent() :Value(id!),
       title: Value(title),
       dueDate: dueDate == null && nullToAbsent
           ? const Value.absent()
           : Value(dueDate),
-      completed: Value(completed),
+      completed:id==null&&nullToAbsent?const Value.absent(): Value(completed!),
     );
   }
 
@@ -68,10 +75,10 @@ class Task extends DataClass implements Insertable<Task> {
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= moorRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'id': serializer.toJson<int>(id),
+      'id': serializer.toJson<int?>(id),
       'title': serializer.toJson<String>(title),
       'dueDate': serializer.toJson<DateTime?>(dueDate),
-      'completed': serializer.toJson<bool>(completed),
+      'completed': serializer.toJson<bool?>(completed),
     };
   }
 

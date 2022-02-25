@@ -1,1 +1,1 @@
-Checking out moor and SQLite database
+Flutter todo app to compare and learn Moor, SQLite

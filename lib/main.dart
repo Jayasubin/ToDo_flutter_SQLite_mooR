@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_flutter_moor/db/todo_table.dart';
+import 'package:todo_flutter_moor/db/moor/todo_table.dart';
 import 'package:todo_flutter_moor/view/moor_page.dart';
+import 'package:todo_flutter_moor/view/sqlite_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,9 +14,12 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: 'Databases',
-      home: Home(),
+    return Provider(
+      create: (_) => AppDatabase(),
+      child: const MaterialApp(
+        title: 'Databases',
+        home: Home(),
+      ),
     );
   }
 }
@@ -38,10 +42,7 @@ class Home extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => Provider(
-                      create: (_) => AppDatabase(),
-                      child: const MoorPage(),
-                    ),
+                    builder: (context) => const MoorPage(),
                   ),
                 );
               },
@@ -54,7 +55,14 @@ class Home extends StatelessWidget {
               ),
             ),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const SQLitePage(),
+                  ),
+                );
+              },
               child: const Padding(
                 padding: EdgeInsets.symmetric(
                   horizontal: 100.0,
