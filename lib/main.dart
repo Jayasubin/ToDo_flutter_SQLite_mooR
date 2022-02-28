@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_flutter_moor/db/moor/todo_table.dart';
+import 'package:todo_flutter_moor/db/drift/database_drift.dart';
+import 'package:todo_flutter_moor/view/drift_page.dart';
 import 'package:todo_flutter_moor/view/moor_page.dart';
 import 'package:todo_flutter_moor/view/sqlite_page.dart';
 
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Provider(
-      create: (_) => AppDatabase(),
+      create: (_) => TodoDriftDatabase(),
       child: const MaterialApp(
         title: 'Databases',
         home: Home(),
@@ -52,6 +53,23 @@ class Home extends StatelessWidget {
                   vertical: 30.0,
                 ),
                 child: Text('Moor'),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const DriftPage(),
+                  ),
+                );
+              },
+              child: const Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 100.0,
+                  vertical: 30.0,
+                ),
+                child: Text('Drift'),
               ),
             ),
             ElevatedButton(
