@@ -33,14 +33,14 @@ class DriftPage extends StatelessWidget {
 
                     return ListTile(
                       title: Text(task.title),
-                      subtitle: Text(task.dueDate != null
-                          ? task.dueDate.toString()
+                      subtitle: Text(task.targetTime != null
+                          ? task.targetTime.toString()
                           : 'N/A'),
                       trailing: Checkbox(
-                        value: task.completed,
+                        value: task.isCompleted,
                         onChanged: (newBool) {
                           database
-                              .updateTask(task.copyWith(completed: newBool));
+                              .updateTodo(task.copyWith(isCompleted: newBool));
                         },
                       ),
                       onLongPress: () {
@@ -59,9 +59,9 @@ class DriftPage extends StatelessWidget {
                               TextButton(
                                 child: const Text('Delete'),
                                 onPressed: () {
-                                  Provider.of<AppDatabase>(context,
+                                  Provider.of<TodoDriftDatabase>(context,
                                           listen: false)
-                                      .deleteTask(task);
+                                      .deleteTodo(task);
                                   Navigator.pop(context);
                                 },
                               ),
@@ -116,11 +116,12 @@ class DriftPage extends StatelessWidget {
                     if (title != null && title!.isNotEmpty) {
                       titleControl.clear();
 
-                      Provider.of<AppDatabase>(context, listen: false)
-                          .insertTask(
+                      Provider.of<TodoDriftDatabase>(context, listen: false)
+                          .insertTodo(
                         DTodo(
                           title: title!,
-                          dueDate: time,
+                          targetTime: time,
+                          userID: 0,
                         ),
                       );
                       time = null;
