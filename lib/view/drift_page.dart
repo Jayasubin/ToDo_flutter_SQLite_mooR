@@ -1,3 +1,4 @@
+import 'package:drift/drift.dart' show Value;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_flutter_moor/db/drift/database_drift.dart';
@@ -118,10 +119,9 @@ class DriftPage extends StatelessWidget {
 
                       Provider.of<TodoDriftDatabase>(context, listen: false)
                           .insertTodo(
-                        DTodo(
-                          title: title!,
-                          targetTime: time,
-                          userID: 0,
+                        DTodosCompanion(
+                          title: Value(title!),
+                          targetTime: Value(time),
                         ),
                       );
                       time = null;
