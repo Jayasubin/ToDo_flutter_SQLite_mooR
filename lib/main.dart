@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_flutter_moor/db/drift/database_drift.dart';
+import 'package:todo_flutter_moor/db/moor/todo_table.dart';
 import 'package:todo_flutter_moor/view/drift_page.dart';
 import 'package:todo_flutter_moor/view/moor_page.dart';
 import 'package:todo_flutter_moor/view/sqlite_page.dart';
@@ -15,8 +16,11 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return Provider(
-      create: (_) => TodoDriftDatabase(),
+    return MultiProvider(
+      providers: [
+        Provider<AppDatabase>(create: (_) => AppDatabase()),
+        Provider<TodoDriftDatabase>(create: (_) => TodoDriftDatabase()),
+      ],
       child: const MaterialApp(
         title: 'Databases',
         home: Home(),
